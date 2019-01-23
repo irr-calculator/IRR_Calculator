@@ -1,0 +1,13 @@
+Rent.com classname = "_3PdAH" is for every individual property
+format of search is 
+    https://www.rent.com/<STATE>/<CITY>-apartments?page=<NUMBER>
+    https://www.rent.com/zip-<ZIPCODE>/apartments_condos_houses_townhouses
+            use _ between multiple property types
+    https://www.rent.com/zip-95110-townhouses/studio
+    https://www.rent.com/zip-95110-townhouses/3-bedroom_2-bathroom
+    https://www.rent.com/zip-95110-townhouses/3-bedroom_2-bathroom_min-price-1000_max-price-4000
+    https://www.rent.com/california/san-francisco/apartments_condos_houses_townhouses_1-bedroom_1-bathroom_min-price-500_max-price-4450?page=2
+
+
+    ISSUE
+    cannot make requests from the client side because of CORS....

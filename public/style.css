@@ -1,0 +1,15 @@
+#root {
+    display: block;
+}
+.searchFrame {
+    width: 80%;
+    padding: 10%;
+    height: 30%;
+    text-align: center;
+}
+
+.searchBar {
+    width: 30%;
+    line-height: 25px;
+    text-align: center;
+}
