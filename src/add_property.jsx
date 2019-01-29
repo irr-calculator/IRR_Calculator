@@ -9,7 +9,7 @@ class AddProperty extends React.Component {
             equity: '',
             sf: 0,
             closingCosts: '',
-            holdLength: 0,
+            holdLength: 5,
             capEx: '',
             capExStart: 0,
             capExEnd: 0,
@@ -66,6 +66,7 @@ class AddProperty extends React.Component {
                   </div>
                     </div>
                 <div className="input-area">
+                    <h3>Aquisition</h3>
                     <form>
                         <div className="inputWrapper">
                           <label>
@@ -119,16 +120,4 @@ class AddProperty extends React.Component {
 module.exports = AddProperty;
 
 
-/*
 
-
-
-const currentInput = 'test';
-    <form className="searchFrame" onSubmit={this.handleSubmit}>
-        <label>
-            Enter {currentInput}
-        <input name={currentInput}type="number" value={this.state.value} onChange={this.handleChange} className="searchBar" required/>
-        </label>
-        <input type="submit" value="Submit" />
-    </form>
-*/

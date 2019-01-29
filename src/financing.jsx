@@ -9,11 +9,31 @@ class Financing extends React.Component {
             interest: 3,
             term: 5,
             ammortization: 30,
-            loans: [],
-            errorMessages:['loan and equity total do not equal purchase price add financing, equity, or equity partner', 'loan term is less than property hold time add financing']
+            errorMessages:['Warning: loan and equity total do not equal purchase price. Add financing, equity, or equity partner', 'Warning: loan and equity total exceeds purchase, capex, renovations and closing costs', 'Warning: Primary Loan ends during hold period and no secondary loan refinance indicated'],
+            secondLoan: {
+                amount: '',
+                term: 5,
+                ammortization: 30,
+                start: 0,
+            },
+            thirdLoan: {
+                amount: '',
+                term: 0,
+                ammortization: '',
+                start: 0,
+            },
+            equityPartner: {
+                amount: '',
+                ownership: 0,
+            },
+            isFirst: true,
         }
         this.handleCurrency = this.handleCurrency.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.checkError = this.checkError.bind(this);
+        this.modalUpdate = this.modalUpdate.bind(this);
+        this.handleSubmit =this.handleSubmit.bind(this);
+        
     }
     handleCurrency(event) {
         let newState = Object.assign({}, this.state);
@@ -37,6 +57,38 @@ class Financing extends React.Component {
         newState[event.target.name] = event.target.value;
         this.setState(newState);
     }
+    handleSubmit(event) {
+        event.preventDefault();
+        console.log(this.state);
+        this.props.advanceEntry(this.state);
+    }
+
+    modalUpdate(object){
+        newState = Object.assign({}, this.state);
+        newState.secondLoan = object.secondLoan;
+        newState.thirdLoan = object.thirdLoan;
+        newState.equityPartner = object.equityPartner;
+        this.setState(newState);
+    }
+    checkError(){
+        const purchase = Number(this.props.state.acquisition.purchasePrice.replace(/[\D]/gi, ''));
+        const capEx = Number(this.props.state.acquisition.capEx.replace(/[\D]/gi, ''));
+        const equity = Number(this.props.state.acquisition.equity.replace(/[\D]/gi, ''));
+        const primaryLoan = Number(this.state.loanAmount.replace(/[\D]/gi, ''));
+        const secondLoan = Number(this.state.secondLoan.amount.replace(/[\D]/gi, ''));
+        const thirdLoan = Number(this.state.thirdLoan.amount.replace(/[\D]/gi, ''));
+        const difference = purchase + capEx - primaryLoan - secondLoan - thirdLoan - equity;
+        if (difference > 0) {
+            return this.state.errorMessages[0];
+        }
+        if (difference < 0) {
+            return this.state.errorMessages[1];
+        }
+        if (this.state.loanAmount !== '' && (Number(this.state.term) < Number(this.props.state.acquisition.holdLength)) && this.state.secondLoan.amount === '') {
+            return this.state.errorMessages[2];
+        }
+        return '';
+    }
 
     render(){
         if (this.props.isShowing === true){
@@ -48,6 +100,7 @@ class Financing extends React.Component {
                   </div>
                 </div>
                 <div className="input-area">
+                    <h3>Financing</h3>
                     <div className="inputWrapper">
                         <label>
                             Current Principle
@@ -73,11 +126,11 @@ class Financing extends React.Component {
                         <input name="interest" type="number" value={this.state.interest} onChange={this.handleChange} required />
                     </div>
                     <div className="inputWrapper">
-                    <div className="error-warning">{this.state.errorMessages[0]}</div>
+                    <div className="error-warning">{this.checkError()}</div>
                     </div>
-                    < FinancingModal />
+                    < FinancingModal update={this.modalUpdate} state={this.state}/>
                 </div>
-                <div className="nextButtonArea" onClick={this.props.forward}>
+                <div className="nextButtonArea" onClick={this.handleSubmit}>
                     <div className="next-button-text">
                         Next
                   </div>

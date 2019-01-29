@@ -153,3 +153,20 @@ label {
   text-decoration: none;
   cursor: pointer;
 }
+
+.error-warning{
+    color: red;
+    font-size: 12px;
+}
+
+tr{
+    width:400px;
+}
+th{
+    width:100px;
+    text-align:cetner;
+}
+td{
+    width:100px;
+    text-align:center;
+}

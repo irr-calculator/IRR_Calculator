@@ -1,6 +1,9 @@
 const React = require('react');
 const AddProperty = require('./add_property.jsx');
 const Financing = require('./financing.jsx');
+const IncomeTable = require('./income-table.jsx');
+const Expenses = require('./expenses.jsx');
+const Options = require('./model_options.jsx');
 
 class App extends React.Component {
     constructor(props) {
@@ -8,7 +11,7 @@ class App extends React.Component {
         this.state = {
             position: 0,
             currentlyShowing: [true, false, false, false, false, false],
-            aquisition: {
+            acquisition: {
                 purchasePrice: '',
                 equity: '',
                 sf: 0,
@@ -34,7 +37,7 @@ class App extends React.Component {
     advanceEntry(object){
         let newState = Object.assign({}, this.state);
         if (newState.position === 1) {
-            newState.aquisition = object;
+            newState.acquisition = object;
         }
         if (newState.position === 2) {
             newState.financing = object;
@@ -66,6 +69,9 @@ class App extends React.Component {
               {button}
               <AddProperty backwards={this.backEntry} handleCurrency={this.handleCurrency} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[1]} />
               <Financing backwards={this.backEntry}advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[2]} state={this.state}/>
+              <IncomeTable backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[3]} state={this.state} />
+                <Expenses backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[4]} state={this.state} />
+                <Options backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[5]} state={this.state} />
             </div>
         )
     }
