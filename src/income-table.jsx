@@ -30,7 +30,7 @@ class IncomeTable extends React.Component {
                 sf: 0,
                 moveIn: 0,
                 moveOut: 0,
-                type: '$/sf',
+                type: '$/sf/yr',
                 amount: 0,
                 serviceType: 'Full Service',
                 isFirstOpen: true,
