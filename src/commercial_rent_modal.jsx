@@ -78,9 +78,9 @@ class CommercialRentModal extends React.Component {
                                 Rental Rate Type
                         </label>
                             <select name="type" onChange={this.handleChange}>
-                                <option value="/SF/YR">$/SF/Year</option>
-                                <option value="/SF/Month">$/SF/Month</option>
-                                <option value="/Month">$/Month</option>
+                                <option name="type" value="$/sf/yr">$/SF/Year</option>
+                                <option name="type" value="$/sf/month">$/SF/Month</option>
+                                <option name="type" value="$/month">$/Month</option>
                             </select>
                         </div>
                     </div>

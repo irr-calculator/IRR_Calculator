@@ -4,31 +4,16 @@ const Financing = require('./financing.jsx');
 const IncomeTable = require('./income-table.jsx');
 const Expenses = require('./expenses.jsx');
 const Options = require('./model_options.jsx');
+const Cashflow = require('./cashflow.jsx');
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             position: 0,
-            currentlyShowing: [true, false, false, false, false, false],
-            acquisition: {
-                purchasePrice: '',
-                equity: '',
-                sf: 0,
-                closingCosts: '',
-                holdLength: 0,
-                capEx: '',
-                capExStart: 0,
-                capExEnd: 0,
-                cashFlowDuringCapEx: true,
-            },
-            financing: {
-                loanAmount: '',
-                interest: 3,
-                term: 5,
-                ammortization: 30,
-                loans: [],
-            },
+            currentlyShowing: [true, false, false, false, false, false, false],
+            acquisition: {},
+            financing: {},
         }
         this.advanceEntry = this.advanceEntry.bind(this);
         this.backEntry = this.backEntry.bind(this);
@@ -41,6 +26,15 @@ class App extends React.Component {
         }
         if (newState.position === 2) {
             newState.financing = object;
+        }
+        if (newState.position === 3) {
+            newState.income = object;
+        }
+        if (newState.position === 4) {
+            newState.expenses = object;
+        }
+        if (newState.position === 5) {
+            newState.options = object;
         }
         newState.currentlyShowing[newState.position] = false;
         newState.position += 1;
@@ -72,6 +66,7 @@ class App extends React.Component {
               <IncomeTable backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[3]} state={this.state} />
                 <Expenses backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[4]} state={this.state} />
                 <Options backwards={this.backEntry} advanceEntry={this.advanceEntry} isShowing={this.state.currentlyShowing[5]} state={this.state} />
+                <Cashflow backwards={this.backEntry} isShowing={this.state.currentlyShowing[6]} state={this.state} />
             </div>
         )
     }

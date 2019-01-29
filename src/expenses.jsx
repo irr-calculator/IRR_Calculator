@@ -80,7 +80,7 @@ class Expenses extends React.Component {
                                 <label>
                                     Insurance
                           </label>
-                                <input name="insurance" type="text" value={this.state.maintenance} onChange={this.handleCurrency} placeholder="$0" required />
+                                <input name="insurance" type="text" value={this.state.insurance} onChange={this.handleCurrency} placeholder="$0" required />
                             </div>
                             <div className="inputWrapper">
                                 <label>
