@@ -66,7 +66,7 @@ class AddProperty extends React.Component {
                   </div>
                     </div>
                 <div className="input-area">
-                    <h3>Aquisition</h3>
+                    <h3>Acquisition</h3>
                     <form>
                         <div className="inputWrapper">
                           <label>

@@ -85,9 +85,9 @@ class ResidentialRentModal extends React.Component {
                         </div>
                         <div className="inputWrapper">
                             <label>
-                                Number of Vacant
+                                Average Occupancy (%);
                         </label>
-                            <input name="vacant" type="number" value={this.state.vacant} onChange={this.handleChange} />
+                            <input name="occupancy" type="number" value={this.state.occupancy} onChange={this.handleChange} />
                         </div>
                     </div>
                 </div>
