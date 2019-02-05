@@ -21,8 +21,7 @@ class Options extends React.Component {
         newState[event.target.name] = event.target.value;
         this.setState(newState);
     }
-
-    //function for handling changes in the currency fields
+    
     handleCurrency(event) {
         let newState = Object.assign({}, this.state);
         let amount = event.target.value.replace(/[\D]/gi, '');
@@ -50,7 +49,6 @@ class Options extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state);
         this.props.advanceEntry(this.state);
     }
 

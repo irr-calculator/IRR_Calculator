@@ -164,9 +164,20 @@ tr{
 }
 th{
     width:100px;
-    text-align:cetner;
+    text-align:center;
 }
 td{
     width:100px;
     text-align:center;
+}
+
+.key-metric-cell{
+    width: 100%;
+    text-align:center;
+}
+.key-metric-row{
+    width: 100%;
+}
+.key-metrics-table{
+    width: 100%;
 }

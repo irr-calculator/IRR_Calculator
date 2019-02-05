@@ -1,128 +1,117 @@
 const React = require('react');
 
-const Cashflow = (props) =>{
-    const addCurrency =(stuff) => {
-        const args = stuff;
-        let total = 0;
-        for (let i = 0; i <= args.length; i++) {
-            if (args[i] !== '' && args[i] !== undefined) {
-                let amount = Number(args[i].replace(/[\D]/gi, ''));
-                total += amount;
-            }
-        }
-        total = total.toString();
-        if (total.length > 3) {
-            let reverse = total.split('').reverse().join('');
-            total = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
-            if (total[0] === ',') {
-                total = total.slice(1, total.length);
-            }
-        }
-        total = '$' + total;
-        return total;
+class Cashflow extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      monthlyIncome: [],
     }
-    const calculateFinalIncome = ()=> {
-        let income = props.state.income;
-        let finalYearIncome = 0;
-        let allIncome = 0;
-        let termInMonths = props.state.acquisition.holdLength * 12;
-        if (income.commercialRent.length > 0){
-            for (let i = 0; i < income.commercialRent.length; i+= 1) {
-                if (income.commercialRent[i].moveOut >= termInMonths) {
-                    if (income.commercialRent[i].type = '$/sf/yr') {
-                        let amount = income.commercialRent[i].amount;
-                        amount = Number(amount.replace(/[\D]/gi, ''));
-                        amount = amount * Number(income.commercialRent[i].sf);
-                        let length = Math.floor((Number(termInMonths) - Number(income.commercialRent[i].moveIn)) / 12);
-                        for (let i = 0; i < length; i ++) {
-                            const inflation = (Number(props.state.options.inflateRents) / 100);
-                            amount = amount * (inflation + 1);
-                            allIncome += amount;
-                        }
-                        finalYearIncome += amount
-                    }
-                }
-            }
-        }
-        if (income.residentialRent.length > 0){
+    this.calculateMonthlyIncome = this.calculateMonthlyIncome.bind(this);
+  }
 
-        }
-        if (income.otherRent.length > 0){
-
-        }
-        allIncome = Math.floor(allIncome);
-        if (allIncome.length > 3) {
-            let reverse = allIncome.split('').reverse().join('');
-            allIncome = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
-            if (allIncome[0] === ',') {
-                allIncome = allIncome.slice(1, allIncome.length);
-            }
-        }
-        allIncome = '$' + allIncome;
-
-        let total = Math.floor(finalYearIncome);
-        if (total.length > 3) {
-            let reverse = total.split('').reverse().join('');
-            total = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
-            if (total[0] === ',') {
-                total = total.slice(1, total.length);
-            }
-        }
-        total = '$' + total;
-        return total;
-
+  //This is a function for taking multiple currency strings, adding them and converting back to string
+  addCurrency(currencyArray) {
+    const args = currencyArray;
+    let total = 0;
+    for (let i = 0; i <= args.length; i++) {
+      if (args[i] !== '' && args[i] !== undefined) {
+        let amount = Number(args[i].replace(/[\D]/gi, ''));
+          total += amount;
+      }
     }
-    const calculateFinalIncome2 = () => {
-        let income = props.state.income;
-        let finalYearIncome = 0;
-        let allIncome = 0;
-        let termInMonths = props.state.acquisition.holdLength * 12;
-        if (income.commercialRent.length > 0) {
-            for (let i = 0; i < income.commercialRent.length; i += 1) {
-                if (income.commercialRent[i].moveOut >= termInMonths) {
-                    if (income.commercialRent[i].type = '$/sf/yr') {
-                        let amount = income.commercialRent[i].amount;
-                        amount = Number(amount.replace(/[\D]/gi, ''));
-                        amount = amount * Number(income.commercialRent[i].sf);
-                        let length = Math.floor((Number(termInMonths) - Number(income.commercialRent[i].moveIn)) / 12);
-                        for (let i = 0; i < length; i++) {
-                            const inflation = (Number(props.state.options.inflateRents) / 100);
-                            amount = amount * (inflation + 1);
-                            allIncome += amount;
-                        }
-                        finalYearIncome += amount
-                    }
-                }
-            }
-        }
-        if (income.residentialRent.length > 0) {
-
-        }
-        if (income.otherRent.length > 0) {
-
-        }
-        allIncome = Math.floor(allIncome);
-        if (allIncome.length > 3) {
-            let reverse = allIncome.split('').reverse().join('');
-            allIncome = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
-            if (allIncome[0] === ',') {
-                allIncome = allIncome.slice(1, allIncome.length);
-            }
-        }
-        allIncome = '$' + allIncome;
-        return allIncome;
+    total = total.toString();
+    if (total.length > 3) {
+      let reverse = total.split('').reverse().join('');
+      total = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
+      if (total[0] === ',') {
+        total = total.slice(1, total.length);
+      }
+    }
+    total = '$' + total;
+    return total;
+  }
+// This is a function to convert all of the rent to a monthly income array for processing
+  calculateMonthlyIncome(){
+    let rentRoll = [];
+    let totalGross = 0;
+    for (let i = 0; i < this.props.state.acquisition.holdLength * 12; i += 1) {
+      rentRoll.push(0);
     }
 
+    // This portion of the function handles commercial rents
 
-    if (props.isShowing === true) {
-        let totalGross = calculateFinalIncome2();
-        let totalAcquisition = addCurrency([props.state.acquisition.purchasePrice, props.state.acquisition.closingCosts]);
-        let totalEquity = addCurrency([props.state.acquisition.equity]);
-        let totalFinancing = addCurrency([props.state.financing.loanAmount, props.state.financing.secondLoan.amount, props.state.financing.thirdLoan.amount]);
-        let finalYearGross = calculateFinalIncome();
+    let commercialRent = this.props.state.income.commercialRent;
+    for (let i = 0; i < commercialRent.length; i ++) {
+      let amount = commercialRent[i].amount;
+      amount = Number(amount.replace(/[\D]/gi, ''));
+      if (commercialRent[i].type === '$/sf/yr') {
+        amount = (amount * Number(commercialRent[i].sf)) / 12;
+      }
+      if (commercialRent[i].type === '$/sf/month') {
+        amount = amount * Number(commercialRent[i].sf);
+      }
+
+      //amount is now a number representing the monthly income in month 0
+
+      const leaseStart = Number(commercialRent[i].moveIn);
+      const leaseLength = Number(commercialRent[i].moveOut) - leaseStart;
+
+      // variable for tracking the inflation of rent each year
+
+      let rentInflation = 1;
+      for (let i = 0; i < leaseLength; i += 12) {
+        for (let j = i; j < i+12 && j < leaseLength; j += 1) {
+          rentRoll[j] += Math.round((amount * rentInflation) * 100) / 100;
+          totalGross += Math.round((amount * rentInflation) * 100) / 100;
+        }
+        rentInflation = rentInflation * (1 + (Number(this.props.state.options.inflateRents) / 100))
+      }
+
+    }
+
+    //This portion of the function handles residential rents
+
+    let residentialRent = this.props.state.income.residentialRent;
+    for (let k= 0; k < residentialRent.length; k += 1) {
+      let totalUnits = residentialRent[k].quantity;
+      let rentPerUnit = residentialRent[k].amount;
+      rentPerUnit = Number(rentPerUnit.replace(/[\D]/gi, ''));
+      let occupancyAsDecimal = (residentialRent[k].occupancy / 100);
+      for (let l = 0; l < rentRoll.length; l += 12) {
+        for (let m = l; m < l + 12; m += 1) {
+          let totalMonthly = Math.round((rentPerUnit * totalUnits * occupancyAsDecimal) * 100) / 100;
+          rentRoll[m] += totalMonthly;
+          totalGross += totalMonthly;
+        }
+        rentPerUnit = Math.round(rentPerUnit * (1 + (Number(this.props.state.options.inflateRents) / 100)) * 100) / 100;
+      }
+    }
+    
+
+  }
+
+  numberToMoneyString(total){
+    total = total.toString();
+    if (total.length > 3) {
+      let reverse = total.split('').reverse().join('');
+      total = reverse.replace(/\d\d\d/gi, '$&' + ',').split('').reverse().join('');
+      if (total[0] === ',') {
+        total = total.slice(1, total.length);
+      }
+    }
+    total = '$' + total;
+    return total;
+  }
+
+  render(){
+    if (this.props.isShowing === true) {
+        this.calculateMonthlyIncome()
+        let totalAcquisition = this.addCurrency([this.props.state.acquisition.purchasePrice, this.props.state.acquisition.closingCosts]);
+        let totalEquity = this.addCurrency([this.props.state.acquisition.equity]);
+        let totalFinancing = this.addCurrency([this.props.state.financing.loanAmount, this.props.state.financing.secondLoan.amount, this.props.state.financing.thirdLoan.amount]);
         return (
             <div className="form-area">
-                <div className="back-button" onClick={props.backwards}>
+                <div className="back-button" onClick={this.props.backwards}>
                     <div className="next-button-text">
                         Back
                 </div>
@@ -130,7 +119,7 @@ const Cashflow = (props) =>{
                 <div className="input-area">
                     <h3>IRR Key Metrics</h3>
                     <table className="key-metrics-table">
-                        <tr className="key-metrics-row"><td className="key-metrics-cell">Acquisition: {totalAcquisition}</td><td className="key-metrics-cell">Total Gross Cashflow: {totalGross}</td></tr>
+                        <tr className="key-metrics-row"><td className="key-metrics-cell">Acquisition: {totalAcquisition}</td><td className="key-metrics-cell">Total Gross Cashflow:</td></tr>
                         <tr className="key-metrics-row"><td className="key-metrics-cell">Equity: {totalEquity}</td><td className="key-metrics-cell">Total Expenses: $</td></tr>
                         <tr className="key-metrics-row"><td className="key-metrics-cell">Financing: {totalFinancing}</td><td className="key-metrics-cell">Term: </td></tr>
                         <tr className="key-metrics-row"><td className="key-metrics-cell">Exit Price: $</td><td className="key-metrics-cell">Total NOI: $</td></tr>
@@ -143,6 +132,7 @@ const Cashflow = (props) =>{
             <div></div>
         )
     }
+  }
 }
 
 module.exports = Cashflow;

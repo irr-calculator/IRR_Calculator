@@ -63,7 +63,8 @@ class IncomeTable extends React.Component {
                 sf: 0,
                 type: '$/month',
                 quantity: 0,
-                vacant: 0,
+                occupancy: 0,
+                amount: '',
                 isFirstOpen: true,
             };
             newState.nextResidentialId += 1;
